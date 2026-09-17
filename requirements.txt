@@ -3,3 +3,5 @@ reportlab
 numpy
 requests
 opencv-python-headless
+easyocr
+torch
