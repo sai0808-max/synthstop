@@ -5,3 +5,6 @@ requests
 opencv-python-headless
 easyocr
 torch
+deepface
+tf-keras
+gdown
