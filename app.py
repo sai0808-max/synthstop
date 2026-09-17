@@ -1,6 +1,8 @@
  
 import streamlit as st
 import os
+import io
+import wave
 import numpy as np
 from analyzer import DocumentAnalyzer
 
@@ -13,34 +15,24 @@ def load_engine():
 
 engine = load_engine()
 
-# =====================================================================
-# BROWSER SAFETY ALARM SOUND GENERATOR (1000Hz Offline Sine Wave)
-# =====================================================================
 def trigger_fraud_alarm_buzzer():
     """Generates a sharp 1000Hz digital warning beep with a valid WAV header container format."""
-    import io
-    import wave
+    sample_rate = 44100  
+    duration_seconds = 0.5  
+    frequency_hz = 1000  
 
-    sample_rate = 44100  # Audio sampling frequency
-    duration_seconds = 0.5  # Duration of beep
-    frequency_hz = 1000  # Sharp alert pitch tone
-
-    # Mathematically construct the raw sine wave array structures
     time_axis = np.linspace(0, duration_seconds, int(sample_rate * duration_seconds), endpoint=False)
     waveform = np.sin(2 * np.pi * frequency_hz * time_axis)
     audio_signal = (waveform * 32767).astype(np.int16)
 
-    # FIXED: Wrap the raw audio bytes inside a valid WAV file header stream memory structure
     wav_buffer = io.BytesIO()
     with wave.open(wav_buffer, "wb") as wav_file:
-        wav_file.setnchannels(1)  # Mono track channel layout
-        wav_file.setsampwidth(2)  # 16-bit PCM configuration parameter
+        wav_file.setnchannels(1)  
+        wav_file.setsampwidth(2)  
         wav_file.setframerate(sample_rate)
         wav_file.writeframes(audio_signal.tobytes())
     
     audio_binary_stream = wav_buffer.getvalue()
-
-    # Stream the valid audio byte container onto the browser container layout with autoplay forced
     st.audio(audio_binary_stream, format="audio/wav", autoplay=True)
 
 def local_convert_image_to_bytes(img_path):
@@ -53,7 +45,7 @@ def local_convert_image_to_bytes(img_path):
         return None
 
 # =====================================================================
-# 🔑 UNLOCK BROWSER SOUND GATE (CRUCIAL AUTOPLAY OVERRIDE)
+# AUDIO ALARM SECURITY SIDEBAR PANEL SETUP
 # =====================================================================
 st.sidebar.markdown("### 🔊 Audio Alarm System Panel")
 audio_authorized = st.sidebar.toggle("🔐 Enable Sound Security Alarms", value=False)
@@ -62,7 +54,7 @@ if audio_authorized:
 else:
     st.sidebar.warning("⚠️ Turn this switch ON to allow the fraud buzzer sound to play.")
 
-# Step 1: Upload Layout
+# Step 1: Portal Dashboard Layout Viewports
 col_left, col_right = st.columns(2)
 with col_left:
     st.markdown("### 🪪 1. Scan/Upload Citizen ID Card")
@@ -71,7 +63,7 @@ with col_right:
     st.markdown("### 🤳 2. Verification Live Selfie Capture")
     uploaded_selfie = st.camera_input("Take Live Biometric Face Scan")
 
-# Run verification layout if both files are submitted
+# Run verification evaluation sequence if parameters are fulfilled
 if uploaded_card and uploaded_selfie:
     card_path, selfie_path = "temp_card.jpg", "temp_selfie.jpg"
     masked_card_path = "temp_masked_card.jpg" 
@@ -82,7 +74,6 @@ if uploaded_card and uploaded_selfie:
     st.markdown("---")
     st.subheader("📊 System Real-Time Security Log Diagnostics")
     
-    # Run scanner and draw privacy blocks over sensitive numbers
     extracted_uid = engine.extract_unique_number(card_path, masked_card_path)
     
     col_img, col_rep = st.columns(2)
@@ -111,7 +102,7 @@ if uploaded_card and uploaded_selfie:
         if q["is_blurry"]: st.error(f"❌ Image is too blurry! (Score: {q['blur_score']})")
         else: st.success(f"✅ Focus Clarity Check Passed ({q['blur_score']})")
 
-        # 2. Metadata Manipulation Scan
+        # 2. Metadata Check
         st.markdown("#### 💻 Module 2: Digital Metadata Manipulation Forensics")
         meta = engine.inspect_file_metadata(card_path)
         if meta["is_tampered"]: st.error(f"🚨 TAMPER WARNING: {meta['reason']}")
@@ -152,7 +143,7 @@ if uploaded_card and uploaded_selfie:
                     else:
                         st.success("✅ Liveness Check Confirmed (Passed Anti-Spoofing Threshold)")
 
-                # Only proceed down the funnel if the user face is confirmed real and organic
+                # Only proceed if liveness parameters verify organic data
                 if liveness["is_live_human"]:
                     # 4b. Deepfake Forensic Layer
                     st.markdown("#### 🤖 Module 4b: Deepfake & Synthetic Face Artifact Forensics")
@@ -178,7 +169,7 @@ if uploaded_card and uploaded_selfie:
                             st.error(f"🚨 CRIMINAL IMPERSONATION DETECTED: Face does not match the registered user on file.")
                             if audio_authorized: trigger_fraud_alarm_buzzer()
 
-    # Cleanup memory
+    # Cleanup memory buffers from path structures safely
     for p in [card_path, selfie_path, masked_card_path]:
         if os.path.exists(p): os.remove(p)
 else:

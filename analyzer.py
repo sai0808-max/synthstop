@@ -130,7 +130,6 @@ class DocumentAnalyzer:
             print(f"=======================================\n")
             
             if records and len(records) > 0:
-                # Safely parse direct list objects directly from records list
                 citizen = records[0] 
                 return {
                     "found": True,
