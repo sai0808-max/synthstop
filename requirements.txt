@@ -5,3 +5,5 @@ requests
 opencv-python-headless
 easyocr
 supabase
+deepface
+streamlit
