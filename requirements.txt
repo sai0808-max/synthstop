@@ -4,6 +4,4 @@ numpy
 requests
 opencv-python-headless
 easyocr
-torch==2.2.1
-deepface==0.0.92
-tf-keras
+deepface
