@@ -2,7 +2,7 @@ streamlit
 reportlab
 numpy
 requests
-opencv-python-headless
+opencv-python-contrib-headless
 easyocr
 supabase
 deepface
