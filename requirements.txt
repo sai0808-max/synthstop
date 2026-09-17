@@ -4,3 +4,4 @@ numpy
 requests
 opencv-python-headless
 easyocr
+supabase
