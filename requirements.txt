@@ -2,3 +2,4 @@ streamlit
 reportlab
 numpy
 requests
+opencv-python-headless
